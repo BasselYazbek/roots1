@@ -77,6 +77,10 @@
                     <div id="alcohol-drinks-container"></div>
                 </div>
                 <div class="col-lg-6">
+                    <h1 class="mb-5">Cold Sandwiches</h1>
+                    <div id="cold-sandwiches-container"></div>
+                </div>
+                <div class="col-lg-6">
                     <h1 class="mb-5">Alcohol Bottles</h1>
                     <div id="alcohol-bottles-container"></div>
                 </div>
@@ -142,15 +146,16 @@
         const app = initializeApp(firebaseConfig);
         const database = getDatabase(app);
       
-        // Reference to the hot coffee items
+        // References to the items
         const hotCoffeeRef = ref(database, 'menu/hot-coffee');
-        const AlcoholDrinksRef = ref(database, 'menu/alcohol-drinks');
-        const AlcoholBottlesRef = ref(database, 'menu/alcohol-bottles');
-        const VodkaBottlesRef = ref(database, 'menu/vodka-bottles');
-        const OtherAlcoholBottlesRef = ref(database, 'menu/other-bottles');
+        const alcoholDrinksRef = ref(database, 'menu/alcohol-drinks');
+        const alcoholBottlesRef = ref(database, 'menu/alcohol-bottles');
+        const vodkaBottlesRef = ref(database, 'menu/vodka-bottles');
+        const otherAlcoholBottlesRef = ref(database, 'menu/other-bottles');
+        const coldSandwichesRef = ref(database, 'menu/cold-sandwiches');
       
-        // Function to render coffee items
-        function renderCoffeeItems(containerId, snapshot) {
+        // Function to render items with image
+        function renderItemsWithImage(containerId, snapshot) {
           const container = document.getElementById(containerId);
           container.innerHTML = ''; // Clear existing content
           snapshot.forEach(childSnapshot => {
@@ -168,26 +173,46 @@
             `;
           });
         }
+
+        // Function to render items without image
+        function renderItemsWithoutImage(containerId, snapshot) {
+          const container = document.getElementById(containerId);
+          container.innerHTML = ''; // Clear existing content
+          snapshot.forEach(childSnapshot => {
+            const item = childSnapshot.val();
+            container.innerHTML += `
+              <div class="d-flex justify-content-between">
+                <p class="mb-2"><i class="fa fa-coffee text-primary mr-3"></i>${item.name}</p>
+                <p class="mb-2">${item.price}</p>
+              </div>
+            `;
+          });
+        }
       
         // Fetch and display hot coffee items
         onValue(hotCoffeeRef, (snapshot) => {
-          renderCoffeeItems('hot-coffee-container', snapshot);
+          renderItemsWithImage('hot-coffee-container', snapshot);
         });
 
-        onValue(AlcoholDrinksRef, (snapshot) => {
-          renderCoffeeItems('alcohol-drinks-container', snapshot);
+        onValue(alcoholDrinksRef, (snapshot) => {
+          renderItemsWithImage('alcohol-drinks-container', snapshot);
         });
 
-        onValue(AlcoholBottlesRef, (snapshot) => {
-          renderCoffeeItems('alcohol-bottles-container', snapshot);
+        onValue(alcoholBottlesRef, (snapshot) => {
+          renderItemsWithImage('alcohol-bottles-container', snapshot);
         });
 
-        onValue(VodkaBottlesRef, (snapshot) => {
-          renderCoffeeItems('vodka-bottles-container', snapshot);
+        onValue(vodkaBottlesRef, (snapshot) => {
+          renderItemsWithImage('vodka-bottles-container', snapshot);
         });
 
-        onValue(OtherAlcoholBottlesRef, (snapshot) => {
-          renderCoffeeItems('other-bottles-container', snapshot);
+        onValue(otherAlcoholBottlesRef, (snapshot) => {
+          renderItemsWithImage('other-bottles-container', snapshot);
+        });
+
+        // Fetch and display cold sandwiches items without image
+        onValue(coldSandwichesRef, (snapshot) => {
+          renderItemsWithoutImage('cold-sandwiches-container', snapshot);
         });
       </script>
 

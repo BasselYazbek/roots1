@@ -90,12 +90,16 @@
             </div>
             <div class="row">
                 <div class="col-lg-6">
-                    <h1 class="mb-5 mt-5">Hot Coffee</h1>
+                    <h1 class="mb-5 mt-5">Coffee</h1>
                     <div id="hot-coffee-container"></div>
                 </div>
                 <div class="col-lg-6">
                     <h1 class="mb-5 mt-5">Alcohol Drinks</h1>
                     <div id="alcohol-drinks-container"></div>
+                </div>
+                <div class="col-lg-6">
+                    <h1 class="mb-5 mt-5">Cold Sandwiches</h1>
+                    <div id="cold-sandwiches-container"></div>
                 </div>
                 <div class="col-lg-6">
                     <h1 class="mb-5 mt-5">Whesky Bottles</h1>
@@ -105,10 +109,10 @@
                     <h1 class="mb-5 mt-5">Vodka Bottles</h1>
                     <div id="vodka-bottles-container"></div>
                 </div>
-                </div>
                 <div class="col-lg-6">
                     <h1 class="mb-5 mt-5">Other Alcohol Bottles</h1>
                     <div id="other-bottles-container"></div>
+                </div>
                 </div>
                 
             </div>
@@ -171,6 +175,7 @@
         const AlcoholBottlesRef = ref(database, 'menu/alcohol-bottles');
         const VodkaBottlesRef = ref(database, 'menu/vodka-bottles');
         const OtherAlcoholBottlesRef = ref(database, 'menu/other-bottles');
+        const coldSandwichesRef = ref(database, 'menu/cold-sandwiches');
       
         // Function to render coffee items
         function renderCoffeeItems(containerId, snapshot) {
@@ -206,6 +211,11 @@
 
         onValue(OtherAlcoholBottlesRef, (snapshot) => {
           renderCoffeeItems('other-bottles-container', snapshot);
+        });
+
+        // Fetch and display cold sandwiches items without image
+        onValue(coldSandwichesRef, (snapshot) => {
+          renderCoffeeItems('cold-sandwiches-container', snapshot);
         });
     </script>
 
